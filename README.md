@@ -36,6 +36,8 @@ Created a repo which included a gitignore. Ran npm install.
 
 ## Credits
 
+Unit 17 & 18 activities, YouTube, StackOverflow, TAs, Bootcamp Instructor.
+
 ## License
 
 License:MIT

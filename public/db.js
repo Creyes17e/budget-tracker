@@ -1,12 +1,9 @@
-const { get } = require("mongoose");
-const { json, response } = require("express");
-
 let db;
 //Creates a new db request for a "budget" db
 const request = indexedDB.open("budget", 1);
 
-request.onupgradeneeded = function ({ target }) {
-  const db = target.result;
+request.onupgradeneeded = function (event) {
+  const db = event.target.result;
   db.createObjectStore("pending", { autoIncrement: true });
 };
 
@@ -51,7 +48,15 @@ function checkDatabase() {
           Accept: "application/json, text.play, */*",
           "Content-Type": "application/json",
         },
-      }).then((response) => response.json());
+      })
+        .then((response) => response.json())
+        .then(() => {
+          const transaction = db.transaction(["pending"], "readwrite");
+
+          const store = transaction.objectStore("pending");
+          //Clears all items in store
+          store.clear();
+        });
     }
   };
 }

@@ -1,14 +1,14 @@
 let db;
 //Creates a new db request for a "budget" db
-const request = indexedDB.open("budget", 1);
+const request = indexedDB.open("budget_db", 1);
 
 request.onupgradeneeded = function (event) {
   const db = event.target.result;
   db.createObjectStore("pending", { autoIncrement: true });
 };
 
-request.onsuccess = function ({ target }) {
-  db = target.result;
+request.onsuccess = function (event) {
+  db = event.target.result;
   //This checks if app is online before it reads from db
   if (navigator.onLine) {
     checkDatabase();
@@ -24,7 +24,7 @@ function saveRecord(record) {
   const transaction = db.transaction(["pending"], "readwrite");
 
   //Access pending object Store
-  const store = transaction.createObjectStore("pending");
+  const store = transaction.objectStore("pending");
 
   //Add record to store with add method
   store.add(record);
@@ -41,11 +41,11 @@ function checkDatabase() {
 
   getAll.onsuccess = function () {
     if (getAll.result.length > 0) {
-      fetch("api/transaction/bulk", {
+      fetch("/api/transaction/bulk", {
         method: "POST",
         body: JSON.stringify(getAll.result),
         headers: {
-          Accept: "application/json, text.play, */*",
+          Accept: "application/json, text.plain, */*",
           "Content-Type": "application/json",
         },
       })

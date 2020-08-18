@@ -19,7 +19,7 @@ Giving users a fast and easy way to track their money is important, but allowing
 
 ## Image
 
-![site image](./public/img/budget.JPG)
+![site image](./public/assets/img/budget.JPG)
 
 ## Table of Contents
 
